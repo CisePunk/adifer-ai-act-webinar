@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<meta name="robots" content="noindex, nofollow">
+<title>AI Readiness Check ADIFER</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap">
+<!--
+  ============================================================
+  DOVE SI CAMBIANO I COLORI
+  Tutti i colori stanno nei tre blocchi qui sotto, e da nessuna
+  altra parte. Cambiando un valore cambia ovunque nella pagina.
+
+  :root                             -> tema chiaro
+  @media prefers-color-scheme:dark  -> tema scuro automatico
+  :root[data-theme="dark"]          -> tema scuro forzato
+  I tre blocchi hanno gli stessi nomi: vanno modificati tutti e tre.
+
+  ATTENZIONE al rosso e al verde ADIFER:
+  in questa pagina rosso e verde sono gia' il semaforo del
+  risultato (critica / adeguata). Se diventano anche il colore
+  dei pulsanti, l'utente non capisce piu' se un rosso e' un
+  bottone o un giudizio. Il rosso/verde del marchio stanno solo
+  nel logo in alto (valori fissi, non variabili) e nei chip di
+  esito; --accent resta un colore diverso da entrambi.
+  ============================================================
+-->
+</head>
+<body>
+<style>
+:root{
+  --ground:#F5F4F0;
+  --surface:#FFFFFF;
+  --surface-2:#EDEBE5;
+  --ink:#1C2430;
+  --muted:#63707E;
+  --line:#D9D6CE;
+  --accent:#125A63;
+  --accent-soft:#DCEAEB;
+  --crit:#A32A2A;
+  --warn:#9C6716;
+  --ok:#2E7248;
+  --crit-bg:#F6E4E2;
+  --warn-bg:#F7EBD8;
+  --ok-bg:#E1EFE5;
+  --btn-fg:#FFFFFF;
+  --shadow:0 1px 2px rgba(28,36,48,.06),0 8px 24px rgba(28,36,48,.06);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#14181D;
+    --surface:#1B2128;
+    --surface-2:#232B33;
+    --ink:#E8EAED;
+    --muted:#9AA5B1;
+    --line:#333C46;
+    --accent:#5EB6BF;
+    --accent-soft:#1E3237;
+    --crit:#E88B84;
+    --warn:#DFAF6A;
+    --ok:#7FC79A;
+    --crit-bg:#3A2422;
+    --warn-bg:#382E1D;
+    --ok-bg:#1F3128;
+    --btn-fg:#10161B;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#14181D;
+  --surface:#1B2128;
+  --surface-2:#232B33;
+  --ink:#E8EAED;
+  --muted:#9AA5B1;
+  --line:#333C46;
+  --accent:#5EB6BF;
+  --accent-soft:#1E3237;
+  --crit:#E88B84;
+  --warn:#DFAF6A;
+  --ok:#7FC79A;
+  --crit-bg:#3A2422;
+  --warn-bg:#382E1D;
+  --ok-bg:#1F3128;
+  --btn-fg:#10161B;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.3);
+}
+*{box-sizing:border-box}
+body{
+  margin:0;background:var(--ground);color:var(--ink);
+  font-family:"Archivo",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;line-height:1.55;-webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:720px;margin:0 auto;padding:0 20px 72px}
+
+/* ---- masthead ---- */
+.mast{display:flex;align-items:center;gap:11px;padding:22px 0 18px;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:9px}
+.logo-mark{width:40px;height:20px;flex:none}
+.logo-word{font-weight:700;font-size:19px;letter-spacing:-.03em;color:var(--ink);line-height:1}
+.mast-div{width:1px;height:20px;background:var(--line)}
+.mast-tool{font-size:13px;font-weight:600;color:var(--muted);letter-spacing:-.005em}
+.proto{margin-left:auto;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid var(--line);color:var(--muted);padding:4px 9px;border-radius:2px;white-space:nowrap}
+
+/* ---- progress rail ---- */
+.rail{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin:0 0 30px}
+.seg span{display:block;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;
+  color:var(--muted);margin-top:7px;font-weight:500}
+.seg i{display:block;height:3px;background:var(--line);border-radius:2px}
+.seg.on i{background:var(--accent)}
+.seg.on span{color:var(--ink)}
+.rail[hidden]{display:none}
+
+/* ---- type ---- */
+h1{font-size:clamp(30px,5vw,40px);line-height:1.1;margin:0 0 14px;font-weight:700;
+  letter-spacing:-.025em;text-wrap:balance}
+h2{font-size:20px;margin:0 0 12px;font-weight:600;letter-spacing:-.01em}
+.q{font-family:"Source Serif 4",Georgia,serif;font-size:clamp(21px,3.4vw,26px);
+  line-height:1.3;font-weight:600;margin:0 0 6px;text-wrap:balance;letter-spacing:-.005em}
+.q-help{color:var(--muted);font-size:14.5px;margin:0 0 22px}
+.lede{font-family:"Source Serif 4",Georgia,serif;font-size:18px;line-height:1.55;color:var(--ink);margin:0 0 20px}
+.eyebrow{font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--accent);
+  font-weight:600;margin:0 0 10px}
+
+/* ---- options ---- */
+.opts{display:flex;flex-direction:column;gap:9px;margin:0 0 26px}
+.opt{display:flex;align-items:flex-start;gap:12px;width:100%;text-align:left;cursor:pointer;
+  background:var(--surface);color:var(--ink);border:1px solid var(--line);border-left:3px solid var(--line);
+  border-radius:3px;padding:14px 16px;font:inherit;font-size:15.5px;line-height:1.4;
+  transition:border-color .13s,background .13s}
+.opt:hover{border-left-color:var(--accent);background:var(--surface)}
+.opt:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.opt.sel{border-left-color:var(--accent);background:var(--accent-soft)}
+.opt em{font-style:normal;color:var(--muted);font-size:13.5px;display:block;margin-top:2px}
+
+.field{display:flex;flex-direction:column;gap:6px;margin-bottom:18px}
+.field label{font-size:12.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:600}
+select,textarea{font:inherit;font-size:15.5px;color:var(--ink);background:var(--surface);
+  border:1px solid var(--line);border-radius:3px;padding:11px 12px;width:100%}
+textarea{min-height:78px;resize:vertical;font-family:"Source Serif 4",Georgia,serif}
+select:focus-visible,textarea:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+.btn{font:inherit;font-weight:600;font-size:15px;cursor:pointer;border-radius:3px;
+  padding:12px 22px;border:1px solid var(--accent);background:var(--accent);color:var(--btn-fg)}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.btn.ghost{background:transparent;color:var(--accent);border-color:var(--line)}
+.navrow{display:flex;align-items:center;gap:16px;margin-top:4px;flex-wrap:wrap}
+.back{background:none;border:0;font:inherit;font-size:14px;color:var(--muted);cursor:pointer;padding:6px 0}
+.back:hover{color:var(--ink)}
+.count{margin-left:auto;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+.screen{animation:in .18s ease-out}
+@keyframes in{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.screen{animation:none}}
+
+/* ---- intro ---- */
+.facts{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--line);
+  border-bottom:1px solid var(--line);margin:0 0 26px}
+.fact{flex:1 1 130px;padding:14px 16px 14px 0}
+.fact b{display:block;font-size:22px;font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.fact span{font-size:12.5px;color:var(--muted)}
+.notice{background:var(--surface-2);border-radius:3px;padding:14px 16px;font-size:14px;
+  color:var(--muted);margin:24px 0 0}
+
+/* ---- report ---- */
+.report-head{border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:18px}
+
+.verdict{border:1px solid var(--line);border-left:4px solid var(--muted);border-radius:3px;
+  padding:16px 18px;margin:0 0 30px}
+.verdict.v0{border-left-color:var(--crit);background:var(--crit-bg)}
+.verdict.v1{border-left-color:var(--warn);background:var(--warn-bg)}
+.verdict.v2{border-left-color:var(--ok);background:var(--ok-bg)}
+.verdict-line{font-family:"Source Serif 4",Georgia,serif;font-size:20px;font-weight:600;
+  margin:4px 0;letter-spacing:-.01em}
+.verdict-sub{font-size:14px;color:var(--ink);margin:0}
+.verdict .dots{display:flex;gap:6px;margin-top:12px}
+.verdict .dots i{width:28px;height:6px;border-radius:2px;background:var(--line);
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.verdict .dots i.c0{background:var(--crit)}
+.verdict .dots i.c1{background:var(--warn)}
+.verdict .dots i.c2{background:var(--ok)}
+
+.areas{display:flex;flex-direction:column}
+.area{display:grid;grid-template-columns:1fr auto;gap:6px 18px;align-items:start;
+  padding:18px 0;border-bottom:1px solid var(--line)}
+.area:first-child{border-top:1px solid var(--line)}
+.area h3{margin:0;font-size:15px;font-weight:600;letter-spacing:-.005em}
+.area p{margin:0;grid-column:1/-1;font-family:"Source Serif 4",Georgia,serif;
+  font-size:16.5px;line-height:1.5;color:var(--ink)}
+.chip{font-size:11px;letter-spacing:.08em;text-transform:uppercase;font-weight:600;
+  padding:3px 10px;border-radius:2px;white-space:nowrap;
+  -webkit-print-color-adjust:exact;print-color-adjust:exact}
+.chip.c0{background:var(--crit-bg);color:var(--crit)}
+.chip.c1{background:var(--warn-bg);color:var(--warn)}
+.chip.c2{background:var(--ok-bg);color:var(--ok)}
+
+ol.prio{margin:0;padding:0;list-style:none;counter-reset:p}
+ol.prio li{counter-increment:p;display:grid;grid-template-columns:26px 1fr;gap:14px;
+  padding:16px 0;border-bottom:1px solid var(--line)}
+ol.prio li::before{content:counter(p);font-weight:700;font-size:15px;color:var(--accent);
+  font-variant-numeric:tabular-nums;line-height:1.5}
+ol.prio b{font-weight:600;display:block;font-size:16px}
+ol.prio span{color:var(--muted);font-size:14.5px}
+.prio-serv{margin-top:9px;font-size:12.5px;color:var(--muted);
+  display:flex;flex-wrap:wrap;gap:7px;align-items:baseline}
+.prio-serv .k{font-size:10px;letter-spacing:.09em;text-transform:uppercase;font-weight:700;
+  color:var(--accent);border:1px solid var(--line);border-radius:2px;padding:1px 6px}
+.prio-serv em{font-style:normal}
+
+.said{background:var(--surface);border:1px solid var(--line);border-radius:3px;padding:16px 18px;margin-top:8px}
+.said p{margin:0 0 10px;font-family:"Source Serif 4",Georgia,serif;font-size:16px}
+.said p:last-child{margin-bottom:0}
+.said small{display:block;font-family:"Archivo",sans-serif;font-size:12px;color:var(--muted);
+  letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px}
+
+.mock{border:1px dashed var(--line);border-radius:3px;padding:18px;margin-top:26px;color:var(--muted);font-size:14.5px}
+.mock b{color:var(--ink);display:block;margin-bottom:6px;font-size:15px}
+section{margin-top:38px}
+.foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
+
+@media print{
+  :root{--ground:#fff;--surface:#fff;--surface-2:#fff}
+  body{background:#fff}
+  .wrap{max-width:none;padding:0 0 24px}
+  .proto,.rail,.navrow,.mock,.back{display:none!important}
+  .screen{animation:none}
+  section{margin-top:22px;break-inside:avoid}
+  .area,ol.prio li,.verdict{break-inside:avoid}
+  a[href]::after{content:""}
+}
+</style>
+
+<div class="wrap">
+  <header class="mast">
+    <span class="logo">
+      <svg class="logo-mark" viewBox="0 0 128 64" role="img" aria-label="ADIFER">
+        <g fill="none" stroke-width="13" stroke-linecap="round">
+          <circle cx="40" cy="32" r="23" stroke="#C4162C"/>
+          <circle cx="88" cy="32" r="23" stroke="#1B8A4C"/>
+        </g>
+        <rect x="59.25" y="27.25" width="9.5" height="9.5" rx="2" transform="rotate(45 64 32)" fill="#2A1417"/>
+      </svg>
+      <span class="logo-word">adifer</span>
+    </span>
+    <span class="mast-div" aria-hidden="true"></span>
+    <span class="mast-tool">AI Readiness Check</span>
+    <span class="proto">Prototipo</span>
+  </header>
+
+  <nav class="rail" id="rail" hidden></nav>
+  <main id="app"></main>
+
+  <p class="foot">Prototipo di lavoro per ADIFER &mdash; Associazione delle imprese e degli enti di formazione e ricerca. Strumento di orientamento, non una valutazione di conformit&agrave;: non produce pareri legali e non certifica nulla. Nessun dato viene salvato o inviato. Riferimento normativo da verificare prima di ogni uso pubblico: Regolamento (UE) 2024/1689, art. 4.</p>
+</div>
+
+<script>
+"use strict";
+const SECTIONS = ["Uso","Persone","Strumenti","Dati","Obiettivi"];
+
+const Q = [
+  {id:"A1",s:0,t:"In azienda qualcuno usa strumenti come ChatGPT, Copilot o Gemini per lavoro?",
+   o:[["No, nessuno",2],["Forse, ma non lo sappiamo con certezza",.5],["Sì, alcune persone",1],["Sì, è ormai diffuso",1]]},
+  {id:"A2",s:0,t:"Chi li usa lo fa con un account aziendale o con il proprio account personale?",
+   o:[["Solo account aziendali",2],["Un po' e un po'",1],["Solo account personali",0],["Non li usa nessuno",2],["Non lo sappiamo",.5]]},
+  {id:"A3",s:0,t:"Che tipo di documenti vengono caricati su questi strumenti?",
+   o:[["Nessuno",2],["Testi generici",1.5],["Documenti di lavoro: offerte, contratti, capitolati",.5],["Anche dati di clienti o dipendenti",0],["Non lo sappiamo",.5]]},
+  {id:"A4",s:0,t:"Esiste una regola scritta su cosa si può e non si può fare con questi strumenti?",
+   o:[["Sì, scritta e comunicata a tutti",2],["Solo a voce",1],["No",0],["Non lo sappiamo",.5]]},
+  {id:"A5",s:0,t:"Qualcuno ha spiegato al personale rischi e limiti di questi strumenti?",
+   o:[["Sì, con una formazione strutturata",2],["Se n'è parlato informalmente",1],["No",0]]},
+
+  {id:"B1",s:1,t:"Usate strumenti automatici per leggere curriculum, selezionare candidati o valutare il personale?",
+   h:"Vale anche se lo fa il software di un fornitore.",
+   o:[["Sì",0],["No",2],["Non lo sappiamo",.5]]},
+  {id:"B2",s:1,t:"Usate strumenti automatici per decidere qualcosa che riguarda un cliente: prezzo, priorità, affidabilità?",
+   o:[["Sì",0],["No",2],["Non lo sappiamo",.5]]},
+  {id:"B3",s:1,t:"Se avete un assistente automatico sul sito o in chat, il cliente sa che non sta parlando con una persona?",
+   o:[["Sì, è dichiarato",2],["No",0],["Non abbiamo assistenti automatici",2]]},
+
+  {id:"C1",s:2,t:"Nell'ultimo anno qualche software che già usavate ha aggiunto funzioni di intelligenza artificiale?",
+   h:"Gestionale, CRM, videosorveglianza, posta elettronica.",
+   o:[["Sì",1],["No",2],["Non lo sappiamo",.5]]},
+  {id:"C2",s:2,t:"Sapete se i vostri fornitori usano l'AI nei servizi che vi erogano?",
+   o:[["Sì, lo sappiamo",2],["No",.5],["Non ci abbiamo mai pensato",0]]},
+  {id:"C3",s:2,t:"C'è qualcuno in azienda che ha il compito di seguire questi temi?",
+   o:[["Sì, una persona precisa",2],["Se ne occupa chi capita",1],["No",0]]},
+
+  {id:"D1",s:3,t:"Dove stanno oggi i documenti importanti dell'azienda?",
+   o:[["In un gestionale",2],["In cartelle condivise",1.5],["Sui computer delle singole persone",.5],["Tra email e WhatsApp",0],["Un po' ovunque",0]]},
+  {id:"D2",s:3,t:"Se una persona domani non ci fosse più, riuscireste a recuperare tutto il suo lavoro?",
+   o:[["Sì, senza problemi",2],["Con fatica",1],["No",0],["Non ci abbiamo mai provato",.5]]},
+  {id:"D3",s:3,t:"Avete già fatto una valutazione sui dati personali che trattate?",
+   h:"È l'analisi prevista dal GDPR.",
+   o:[["Sì, aggiornata",2],["Sì, ma vecchia",1],["No",0],["Non lo sappiamo",.5]]},
+
+  {id:"E1",s:4,type:"text",t:"Se poteste togliere di mezzo una sola attività ripetitiva domani mattina, quale sarebbe?",
+   h:"Una riga basta. Si può anche saltare."},
+  {id:"E2",s:4,type:"text",t:"Qual è il problema che continuate a rimandare perché non sapete da dove cominciare?",
+   h:"Una riga basta. Si può anche saltare."},
+  {id:"E3",s:4,t:"Nei prossimi sei mesi la priorità è…",
+   o:[["Trovare clienti",null],["Organizzare meglio il lavoro interno",null],["Formare le persone",null],["Mettersi in regola",null]]},
+  {id:"E4",s:4,t:"Avete mai usato la formazione finanziata dai fondi interprofessionali?",
+   o:[["Sì, regolarmente",2],["Una volta",1.5],["No",.5],["Non sappiamo cosa sia",0]]}
+];
+
+const AREAS = [
+  {name:"Regole e consapevolezza", q:["A4","A5","C1","C3"]},
+  {name:"Esposizione dei dati",    q:["A2","A3","D1","D2","D3"]},
+  {name:"Uso su persone e clienti",q:["B1","B2","B3"]},
+  {name:"Competenze",              q:["A5","C2","E4"]}
+];
+
+const SENT = {
+  "Regole e consapevolezza":[
+    "In azienda si usano strumenti di AI, ma non c'è nessuna regola scritta su cosa si può caricare: oggi ognuno decide da sé.",
+    "Qualche regola c'è, ma è verbale o non la presidia nessuno in particolare. Basta poco per metterla nero su bianco.",
+    "Le regole esistono, sono scritte e c'è una persona che se ne occupa. È l'area in cui siete più avanti."],
+  "Esposizione dei dati":[
+    "Documenti di lavoro escono dall'azienda attraverso account personali o strumenti non governati, e non è possibile sapere dove finiscono.",
+    "I documenti sono in parte ordinati e in parte sparsi. Il rischio non è alto, ma la ricostruzione di un lavoro può costare tempo.",
+    "I documenti stanno in un sistema unico e il trattamento dei dati personali è stato valutato di recente."],
+  "Uso su persone e clienti":[
+    "Usate strumenti automatici in decisioni che riguardano persone o clienti. Non è vietato, ma è l'area con più obblighi: va verificata per prima.",
+    "Ci sono strumenti che toccano persone o clienti e alcune cose non sono chiare. Vale la pena capire esattamente cosa fa il software.",
+    "Non risultano strumenti automatici usati per valutare persone o decidere sui clienti. È l'area in cui siete più tranquilli."],
+  "Competenze":[
+    "Nessuno ha ricevuto una formazione su questi strumenti, e non sapete cosa fanno i vostri fornitori. Si parte da zero.",
+    "Qualche conoscenza c'è, ma non strutturata: dipende dalle persone e non dall'organizzazione.",
+    "Le persone sono state formate e sapete cosa usano i vostri fornitori."]
+};
+
+const state = {answers:{}, meta:{}, i:-1};
+const app = document.getElementById("app");
+const rail = document.getElementById("rail");
+
+const SETTORI = ["Metalmeccanica","Tessile e abbigliamento","Alimentare","Edilizia e impiantistica","Commercio","Servizi alle imprese","Turismo e ristorazione","Informatica","Altro"];
+const DIM = ["Fino a 9 persone","Da 10 a 49","Da 50 a 249","Oltre 250"];
+const RUOLI = ["Titolare o socio","Direzione","Amministrazione","Responsabile del personale","IT","Altro"];
+
+function el(tag, cls, html){const e=document.createElement(tag); if(cls)e.className=cls; if(html!==undefined)e.innerHTML=html; return e;}
+function plural(n,one,many){return n+" "+(n===1?one:many);}
+function isUnknown(label){return /non lo sappiamo|mai pensato|mai provato|con certezza/i.test(label||"");}
+
+function drawRail(){
+  if(state.i<0){rail.hidden=true;return;}
+  rail.hidden=false; rail.innerHTML="";
+  const cur = state.i<Q.length ? Q[state.i].s : 4;
+  SECTIONS.forEach((n,k)=>{
+    const d=el("div","seg"+(k<=cur?" on":""));
+    d.appendChild(el("i")); d.appendChild(el("span",null,n));
+    rail.appendChild(d);
+  });
+}
+
+function intro(){
+  state.i=-1; drawRail();
+  const s=el("div","screen");
+  s.innerHTML = `
+    <p class="eyebrow">Check gratuito per le imprese associate</p>
+    <h1>La tua azienda usa l'AI. Sai cosa ci sta caricando?</h1>
+    <p class="lede">Diciotto domande in parole normali su come l'intelligenza artificiale &egrave; gi&agrave; entrata nel lavoro di tutti i giorni. Alla fine ricevi una fotografia della tua azienda e le tre cose da sistemare per prime.</p>
+    <div class="facts">
+      <div class="fact"><b>18</b><span>domande, nessuna tecnica</span></div>
+      <div class="fact"><b>6&nbsp;min</b><span>tempo di compilazione</span></div>
+      <div class="fact"><b>subito</b><span>il risultato, senza attese</span></div>
+    </div>
+    <h2>Prima di cominciare</h2>
+    <div class="field"><label for="f1">Settore</label><select id="f1">${SETTORI.map(x=>`<option>${x}</option>`).join("")}</select></div>
+    <div class="field"><label for="f2">Quante persone lavorano in azienda</label><select id="f2">${DIM.map(x=>`<option>${x}</option>`).join("")}</select></div>
+    <div class="field"><label for="f3">Il tuo ruolo</label><select id="f3">${RUOLI.map(x=>`<option>${x}</option>`).join("")}</select></div>
+    <div class="navrow" style="margin-top:22px">
+      <button class="btn" id="go">Comincia</button>
+      <button class="btn ghost" id="demo">Vedi un esempio di risultato</button>
+    </div>
+    <p class="notice"><strong>Prototipo dimostrativo.</strong> Serve a mostrare come funziona il percorso. Non salva n&eacute; invia nulla, e non sostituisce una valutazione di conformit&agrave;.</p>`;
+  app.innerHTML=""; app.appendChild(s);
+  document.getElementById("go").onclick=()=>{
+    state.meta={settore:f1.value,dim:f2.value,ruolo:f3.value};
+    state.i=0; render();
+  };
+  document.getElementById("demo").onclick=demo;
+}
+
+function render(){
+  if(state.i>=Q.length){return report();}
+  drawRail();
+  const q=Q[state.i];
+  const s=el("div","screen");
+  const head = `<p class="q">${q.t}</p>${q.h?`<p class="q-help">${q.h}</p>`:'<div style="height:14px"></div>'}`;
+  if(q.type==="text"){
+    s.innerHTML = head + `<div class="field"><textarea id="ta" placeholder="Scrivi qui, oppure vai avanti."></textarea></div>
+      <div class="navrow"><button class="btn" id="next">Avanti</button>
+      <button class="back" id="bk">Indietro</button>
+      <span class="count">${state.i+1} / ${Q.length}</span></div>`;
+    app.innerHTML=""; app.appendChild(s);
+    const ta=document.getElementById("ta"); ta.value=state.answers[q.id]?.text||"";
+    document.getElementById("next").onclick=()=>{state.answers[q.id]={text:ta.value.trim(),v:null};state.i++;render();};
+  }else{
+    s.innerHTML = head + `<div class="opts">${q.o.map((o,k)=>
+      `<button class="opt${state.answers[q.id]?.k===k?" sel":""}" data-k="${k}">${o[0]}</button>`).join("")}</div>
+      <div class="navrow"><button class="back" id="bk">Indietro</button>
+      <span class="count">${state.i+1} / ${Q.length}</span></div>`;
+    app.innerHTML=""; app.appendChild(s);
+    s.querySelectorAll(".opt").forEach(b=>b.onclick=()=>{
+      const k=+b.dataset.k;
+      state.answers[q.id]={k, v:q.o[k][1], label:q.o[k][0]};
+      state.i++; render();
+    });
+  }
+  const bk=document.getElementById("bk");
+  bk.onclick=()=>{ state.i--; state.i<0?intro():render(); };
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+function scoreAreas(){
+  return AREAS.map(a=>{
+    let sum=0,n=0,unknown=false;
+    a.q.forEach(id=>{
+      const ans=state.answers[id];
+      if(!ans||ans.v===null||ans.v===undefined)return;
+      sum+=ans.v;n++;
+      if(ans.v===.5&&isUnknown(ans.label))unknown=true;
+    });
+    const avg=n?sum/n:1;
+    let lvl = avg<0.9?0 : avg<1.55?1 : 2;
+    if(lvl===2&&unknown)lvl=1;
+    return {name:a.name, lvl};
+  });
+}
+
+function a(id){return state.answers[id]?.label||"";}
+
+function priorities(){
+  const out=[];
+  const push=(b,s,serv)=>{if(out.length<3)out.push({b,s,serv});};
+  const usa = a("A1")!=="No, nessuno";
+  if(usa && /^(No|Solo a voce|Non lo sappiamo)$/.test(a("A4")))
+    push("Scrivere una regola interna di mezza pagina su cosa si può caricare sugli strumenti di AI.",
+         "Costo zero, effetto immediato. È anche il primo documento che vi chiederebbe chiunque venisse a controllare.",
+         ["Policy interna e alfabetizzazione AI","Interattiva — modulo già disponibile"]);
+  if(/personali|Un po'|Non lo sappiamo/.test(a("A2")) && usa)
+    push("Passare agli account aziendali per chi già usa questi strumenti.",
+         "Un account personale porta i documenti fuori dall'azienda senza che nessuno possa più risalirci.",
+         ["Intervento su strumenti e accessi","Da individuare con ADIFER"]);
+  if(a("A3")==="Anche dati di clienti o dipendenti")
+    push("Stabilire subito cosa non si carica: dati di clienti, dipendenti e fornitori.",
+         "È la parte con le conseguenze più concrete, e si risolve con una frase detta bene a tutti.",
+         ["Policy interna e data protection","Interattiva + consulente"]);
+  if(a("B1")==="Sì"||a("B2")==="Sì")
+    push("Farsi spiegare dal fornitore come funziona lo strumento che valuta persone o clienti.",
+         "Quando l'automazione tocca candidati, dipendenti o clienti, gli obblighi aumentano e la responsabilità resta all'azienda.",
+         ["Verifica di conformità e organizzazione","ASACERT"]);
+  if(/^(No|Se n'è parlato informalmente)$/.test(a("A5")))
+    push("Formare chi già usa questi strumenti, anche solo mezza giornata.",
+         /No|Non sappiamo cosa sia/.test(a("E4"))
+           ? "Non avete mai usato la formazione finanziata: nel vostro caso è probabile che questo percorso sia finanziabile."
+           : "Avete già usato i fondi interprofessionali: lo stesso canale può coprire anche questo.",
+         ["Piano formativo finanziato","FondItalia — ADIFER è Ente Attuatore"]);
+  if(/WhatsApp|ovunque|singole persone/.test(a("D1")))
+    push("Mettere i documenti in un posto solo.",
+         "Finché stanno tra email, chat e computer personali, ogni altra cosa — automazione compresa — costa il doppio.",
+         ["Ordine documentale e digitalizzazione","ADIFER Servizi Digitali"]);
+  if(/^(No|Sì, ma vecchia|Non lo sappiamo)$/.test(a("D3")))
+    push("Riprendere in mano la valutazione sui dati personali.",
+         "Se è vecchia o non c'è, gli strumenti nuovi la rendono di colpo attuale.",
+         ["Compliance e organizzazione","ASACERT"]);
+  if(/^(No|Se ne occupa chi capita)$/.test(a("C3")))
+    push("Dare a una persona il compito di seguire questi temi, anche part-time.",
+         "Senza un nome, ogni decisione resta sospesa e ogni strumento entra in azienda senza che nessuno lo sappia.",
+         ["Organizzazione e competenze","ADIFER"]);
+  if(a("E3")==="Trovare clienti")
+    push("Verificare se esistono bandi compatibili con il vostro settore e territorio.",
+         "Molte imprese non partecipano semplicemente perché nessuno le avvisa in tempo.",
+         ["Scouting bandi e agevolazioni","VistaGare"]);
+  push("Rifare questo check fra sei mesi.",
+       "Gli strumenti entrano in azienda da soli: quello che oggi è verde può cambiare senza che nessuno lo decida.",
+       ["Monitoraggio periodico","ADIFER"]);
+  return out.slice(0,3);
+}
+
+function verdict(areas){
+  const risky = areas.some(x=>(x.name==="Uso su persone e clienti"||x.name==="Esposizione dei dati")&&x.lvl===0);
+  const avgL = areas.reduce((s,x)=>s+x.lvl,0)/areas.length;
+  if(risky) return {line:"Ci sono punti da sistemare subito",tone:0};
+  if(avgL<1) return {line:"La base è ancora da costruire",tone:0};
+  if(avgL<1.6) return {line:"Impianto discreto, con lacune mirate",tone:1};
+  return {line:"Buona base di partenza",tone:2};
+}
+
+function report(){
+  drawRail();
+  const areas=scoreAreas(), prio=priorities();
+  const chips=["Critica","Da migliorare","Adeguata"];
+  const nouns=[["area critica","aree critiche"],["area da migliorare","aree da migliorare"],["area adeguata","aree adeguate"]];
+  const lvlCount=[0,1,2].map(l=>areas.filter(x=>x.lvl===l).length);
+  const subParts=lvlCount.map((c,l)=>c?plural(c,nouns[l][0],nouns[l][1]):null).filter(Boolean);
+  const unknowns=Object.values(state.answers).filter(x=>x&&isUnknown(x.label)).length;
+  const v=verdict(areas);
+  const e1=state.answers.E1?.text, e2=state.answers.E2?.text;
+
+  const s=el("div","screen");
+  s.innerHTML = `
+    <div class="report-head">
+      <p class="eyebrow">Risultato del check</p>
+      <h1>La fotografia della vostra azienda</h1>
+      <p class="lede" style="margin-bottom:0">${state.meta.settore||"Impresa"} &middot; ${state.meta.dim||""} &middot; compilato da ${state.meta.ruolo||""}</p>
+    </div>
+
+    <div class="verdict v${v.tone}">
+      <p class="eyebrow" style="margin:0 0 2px">In sintesi</p>
+      <p class="verdict-line">${v.line}.</p>
+      <p class="verdict-sub">${subParts.join(" &middot; ")} su quattro.</p>
+      ${unknowns>=3?`<p class="verdict-sub" style="margin-top:8px">Su ${unknowns} risposte avete indicato &laquo;non lo sappiamo&raquo;. Prima ancora delle regole, quello che manca &egrave; la visibilit&agrave; su cosa succede davvero in azienda.</p>`:""}
+      <div class="dots">${areas.map(x=>`<i class="c${x.lvl}" title="${x.name}"></i>`).join("")}</div>
+    </div>
+
+    <section>
+      <div class="areas">
+        ${areas.map(x=>`<div class="area">
+            <h3>${x.name}</h3>
+            <span class="chip c${x.lvl}">${chips[x.lvl]}</span>
+            <p>${SENT[x.name][x.lvl]}</p>
+          </div>`).join("")}
+      </div>
+    </section>
+
+    <section>
+      <h2>Le tre cose da fare per prime</h2>
+      <p class="q-help" style="margin-bottom:14px">Per ognuna, il canale ADIFER gi&agrave; attivo.</p>
+      <ol class="prio">
+        ${prio.map(p=>`<li><div>
+          <b>${p.b}</b><span>${p.s}</span>
+          <div class="prio-serv"><span class="k">ADIFER</span> ${p.serv[0]} <em>&middot; ${p.serv[1]}</em></div>
+        </div></li>`).join("")}
+      </ol>
+    </section>
+
+    ${(e1||e2)?`<section><h2>Quello che ci avete scritto</h2><div class="said">
+      ${e1?`<p><small>Attivit&agrave; ripetitiva da togliere</small>${e1}</p>`:""}
+      ${e2?`<p><small>Il problema rimandato</small>${e2}</p>`:""}
+    </div><p class="q-help" style="margin-top:10px">Sono le due righe che il consulente legge per prime.</p></section>`:""}
+
+    <div class="mock">
+      <b>Qui, nella versione definitiva, si chiedono i contatti.</b>
+      Nome, azienda, email e telefono, con l'informativa privacy di ADIFER come titolare del trattamento.
+      Poi una riga sola: &laquo;Se vuoi, ne parliamo in venti minuti e vediamo da dove conviene partire&raquo;, con un nome e un recapito veri.
+      Mai &laquo;grazie, sarai ricontattato&raquo;. Il prototipo non raccoglie e non invia nulla.
+    </div>
+
+    <div class="navrow" style="margin-top:26px">
+      <button class="btn" id="print">Stampa o salva in PDF</button>
+      <button class="btn ghost" id="again">Ricomincia</button>
+      <button class="back" id="bk">Torna all'ultima domanda</button>
+    </div>`;
+  app.innerHTML=""; app.appendChild(s);
+  document.getElementById("print").onclick=()=>window.print();
+  document.getElementById("again").onclick=()=>{state.answers={};intro();window.scrollTo({top:0,behavior:"instant"});};
+  document.getElementById("bk").onclick=()=>{state.i=Q.length-1;render();};
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+function demo(){
+  const preset={A1:"Sì, alcune persone",A2:"Solo account personali",A3:"Documenti di lavoro: offerte, contratti, capitolati",
+    A4:"No",A5:"No",B1:"No",B2:"No",B3:"Non abbiamo assistenti automatici",C1:"Non lo sappiamo",
+    C2:"Non ci abbiamo mai pensato",C3:"Se ne occupa chi capita",D1:"Tra email e WhatsApp",
+    D2:"Con fatica",D3:"Sì, ma vecchia",E3:"Organizzare meglio il lavoro interno",E4:"No"};
+  state.answers={};
+  Q.forEach(q=>{
+    if(q.type==="text")return;
+    const k=q.o.findIndex(o=>o[0]===preset[q.id]);
+    if(k>=0)state.answers[q.id]={k,v:q.o[k][1],label:q.o[k][0]};
+  });
+  state.answers.E1={text:"Il carico manuale delle bolle in contabilità.",v:null};
+  state.answers.E2={text:"Rifare il sito, ma non so a chi chiederlo.",v:null};
+  state.meta={settore:"Metalmeccanica",dim:"Da 10 a 49",ruolo:"Titolare o socio"};
+  state.i=Q.length;
+  report();
+}
+
+intro();
+</script>
+
+</body>
+</html>
