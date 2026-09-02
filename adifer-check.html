@@ -215,14 +215,8 @@ ol.prio span{color:var(--muted);font-size:14.5px}
 .said small{display:block;font-family:"Archivo",sans-serif;font-size:12px;color:var(--muted);
   letter-spacing:.05em;text-transform:uppercase;margin-bottom:3px}
 
-.lead-form input{font:inherit;font-size:15.5px;color:var(--ink);background:var(--surface);
-  border:1px solid var(--line);border-radius:3px;padding:11px 12px;width:100%}
-.lead-form input:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-.consent{display:flex;gap:10px;font-size:13.5px;color:var(--muted);margin:6px 0;line-height:1.45}
-.consent input{margin-top:3px;flex:none}
-.consent a{color:var(--accent)}
-.lead-done{border:1px solid var(--ok);background:var(--ok-bg);border-radius:3px;padding:16px 18px;
-  font-family:"Source Serif 4",Georgia,serif;font-size:16px}
+.mock{border:1px dashed var(--line);border-radius:3px;padding:18px;margin-top:26px;color:var(--muted);font-size:14.5px}
+.mock b{color:var(--ink);display:block;margin-bottom:6px;font-size:15px}
 section{margin-top:38px}
 .foot{margin-top:44px;padding-top:18px;border-top:1px solid var(--line);font-size:12.5px;color:var(--muted)}
 
@@ -230,7 +224,7 @@ section{margin-top:38px}
   :root{--ground:#fff;--surface:#fff;--surface-2:#fff}
   body{background:#fff}
   .wrap{max-width:none;padding:0 0 24px}
-  .proto,.rail,.navrow,#contatti,.back{display:none!important}
+  .proto,.rail,.navrow,.mock,.back{display:none!important}
   .screen{animation:none}
   section{margin-top:22px;break-inside:avoid}
   .area,ol.prio li,.verdict{break-inside:avoid}
@@ -258,13 +252,11 @@ section{margin-top:38px}
   <nav class="rail" id="rail" hidden></nav>
   <main id="app"></main>
 
-  <p class="foot">Prototipo di lavoro per ADIFER &mdash; Associazione delle imprese e degli enti di formazione e ricerca. Strumento di orientamento, non una valutazione di conformit&agrave;: non produce pareri legali e non certifica nulla. Le risposte non lasciano il browser finch&eacute; non invii il modulo di contatto finale; in quel caso i dati vanno ad ADIFER, titolare del trattamento. Riferimento normativo da verificare prima di ogni uso pubblico: Regolamento (UE) 2024/1689, art. 4.</p>
+  <p class="foot">Prototipo di lavoro per ADIFER &mdash; Associazione delle imprese e degli enti di formazione e ricerca. Strumento di orientamento, non una valutazione di conformit&agrave;: non produce pareri legali e non certifica nulla. Nessun dato viene salvato o inviato. Riferimento normativo da verificare prima di ogni uso pubblico: Regolamento (UE) 2024/1689, art. 4.</p>
 </div>
 
 <script>
 "use strict";
-// URL del Web Service Python su Render. Aggiornare se Render assegna un nome diverso.
-const API_BASE = "https://adifer-api.onrender.com";
 const SECTIONS = ["Uso","Persone","Strumenti","Dati","Obiettivi"];
 
 const Q = [
@@ -382,7 +374,7 @@ function intro(){
       <button class="btn" id="go">Comincia</button>
       <button class="btn ghost" id="demo">Vedi un esempio di risultato</button>
     </div>
-    <p class="notice"><strong>Prototipo dimostrativo</strong>, non sostituisce una valutazione di conformit&agrave;. Le risposte restano nel tuo browser; arrivano ad ADIFER solo se alla fine compili e invii il modulo dei contatti.</p>`;
+    <p class="notice"><strong>Prototipo dimostrativo.</strong> Serve a mostrare come funziona il percorso. Non salva n&eacute; invia nulla, e non sostituisce una valutazione di conformit&agrave;.</p>`;
   app.innerHTML=""; app.appendChild(s);
   document.getElementById("go").onclick=()=>{
     state.meta={settore:f1.value,dim:f2.value,ruolo:f3.value};
@@ -550,22 +542,12 @@ function report(){
       ${e2?`<p><small>Il problema rimandato</small>${e2}</p>`:""}
     </div><p class="q-help" style="margin-top:10px">Sono le due righe che il consulente legge per prime.</p></section>`:""}
 
-    <section id="contatti">
-      <h2>Ricevi il quadro completo e i prossimi passi</h2>
-      <p class="q-help" style="margin-bottom:16px">Ti mandiamo la fotografia completa e, se vuoi, venti minuti per capire da dove conviene partire. I dati vanno solo ad ADIFER.</p>
-      <form id="lead" class="lead-form" novalidate>
-        <div class="field"><label for="l-nome">Nome e cognome *</label><input id="l-nome" name="nome" autocomplete="name" required></div>
-        <div class="field"><label for="l-azienda">Azienda</label><input id="l-azienda" name="azienda" autocomplete="organization"></div>
-        <div class="field"><label for="l-email">Email *</label><input id="l-email" name="email" type="email" autocomplete="email" required></div>
-        <div class="field"><label for="l-tel">Telefono</label><input id="l-tel" name="telefono" type="tel" autocomplete="tel"></div>
-        <input type="text" name="website" id="l-website" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px">
-        <label class="consent"><input type="checkbox" id="l-consenso" required> Ho letto l'<a href="https://www.adifer.org/" target="_blank" rel="noopener">informativa privacy di ADIFER</a> e acconsento al trattamento dei dati per essere ricontattato.</label>
-        <div class="navrow" style="margin-top:6px">
-          <button class="btn" type="submit" id="l-send">Invia</button>
-          <span class="count" id="l-status" role="status" aria-live="polite"></span>
-        </div>
-      </form>
-    </section>
+    <div class="mock">
+      <b>Qui, nella versione definitiva, si chiedono i contatti.</b>
+      Nome, azienda, email e telefono, con l'informativa privacy di ADIFER come titolare del trattamento.
+      Poi una riga sola: &laquo;Se vuoi, ne parliamo in venti minuti e vediamo da dove conviene partire&raquo;, con un nome e un recapito veri.
+      Mai &laquo;grazie, sarai ricontattato&raquo;. Il prototipo non raccoglie e non invia nulla.
+    </div>
 
     <div class="navrow" style="margin-top:26px">
       <button class="btn" id="print">Stampa o salva in PDF</button>
@@ -576,29 +558,6 @@ function report(){
   document.getElementById("print").onclick=()=>window.print();
   document.getElementById("again").onclick=()=>{state.answers={};intro();window.scrollTo({top:0,behavior:"instant"});};
   document.getElementById("bk").onclick=()=>{state.i=Q.length-1;render();};
-
-  const lead=document.getElementById("lead");
-  lead.onsubmit=async ev=>{
-    ev.preventDefault();
-    const st=document.getElementById("l-status"), btn=document.getElementById("l-send");
-    if(!document.getElementById("l-consenso").checked){st.textContent="Serve il consenso per inviare.";return;}
-    if(!lead.nome.value.trim()||!lead.email.value.trim()){st.textContent="Nome ed email sono obbligatori.";return;}
-    btn.disabled=true; st.textContent="Invio in corso… può richiedere qualche secondo.";
-    try{
-      const r=await fetch(API_BASE+"/submit",{method:"POST",headers:{"Content-Type":"application/json"},
-        body:JSON.stringify({
-          nome:lead.nome.value.trim(), azienda:lead.azienda.value.trim(),
-          email:lead.email.value.trim(), telefono:lead.telefono.value.trim(),
-          website:lead.website.value, consenso:true,
-          settore:state.meta.settore, dimensione:state.meta.dim, ruolo:state.meta.ruolo,
-          answers:state.answers,
-          report:{verdict:v.line, tone:v.tone, aree:areas, priorita:prio.map(p=>p.b)}
-        })});
-      if(!r.ok) throw new Error(await r.text());
-      lead.replaceWith(el("div","lead-done","Richiesta inviata. Ti ricontattiamo a breve."));
-    }catch(e){ btn.disabled=false; st.textContent="Invio non riuscito. Riprova tra poco."; }
-  };
-
   window.scrollTo({top:0,behavior:"instant"});
 }
 

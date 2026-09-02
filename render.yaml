@@ -14,20 +14,3 @@ services:
       - type: rewrite
         source: /*
         destination: /index.html
-
-  - type: web
-    name: adifer-api
-    runtime: python
-    rootDir: api
-    plan: free
-    buildCommand: pip install -r requirements.txt
-    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
-    envVars:
-      - key: DATABASE_URL
-        sync: false
-      - key: ALLOWED_ORIGIN
-        value: https://adifer-ai-act-webinar.onrender.com
-      - key: ADMIN_USER
-        value: adifer
-      - key: ADMIN_PASS
-        generateValue: true
